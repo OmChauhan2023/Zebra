@@ -48,12 +48,13 @@
 Predict the probability of a customer filing a health insurance claim based on 50 anonymized features.
 
 ### **Business Value**
-┌─────────────────────────────────────────────────────────┐
-│  💰 Optimized Pricing      → Better risk stratification │
-│  🔍 Fraud Detection        → Early identification       │
-│  📊 Resource Allocation    → Efficient operations       │
-│  🎯 Customer Segmentation  → Personalized products      │
-└─────────────────────────────────────────────────────────┘
+
+| Pillar | Outcome |
+| :--- | :--- |
+| 💰 **Optimized Pricing** | Better risk stratification |
+| 🔍 **Fraud Detection** | Early identification |
+| 📊 **Resource Allocation** | Efficient operations |
+| 🎯 **Customer Segmentation**| Personalized products |
 
 ---
 
@@ -119,17 +120,13 @@ Predict the probability of a customer filing a health insurance claim based on 5
 | **Improvement** | **+8.5%** | - |
 
 ### **Model Comparison**
-┌─────────────────────────────────────────────────────────────┐
-│                    Model Performance                        │
-├─────────────┬──────────────┬──────────────┬────────────────┤
-│   Model     │ Individual   │  Calibrated  │ Ensemble Weight│
-├─────────────┼──────────────┼──────────────┼────────────────┤
-│ LightGBM    │   0.2798     │   0.2826     │     12.3%      │
-│ XGBoost     │   0.2794     │   0.2824     │     27.8%      │
-│ CatBoost    │   0.2820     │   0.2848     │     59.9%      │
-├─────────────┼──────────────┼──────────────┼────────────────┤
-│ ENSEMBLE    │      -       │      -       │   0.2851 🎯    │
-└─────────────┴──────────────┴──────────────┴────────────────┘
+
+| Model | Individual | Calibrated | Ensemble Weight |
+| :--- | :--- | :--- | :--- |
+| LightGBM | 0.2798 | 0.2826 | 12.3% |
+| XGBoost | 0.2794 | 0.2824 | 27.8% |
+| CatBoost | 0.2820 | 0.2848 | 59.9% |
+| **ENSEMBLE** | **-** | **-** | **0.2851** 🎯 |
 
 ### **Optimization Journey**
 
@@ -243,83 +240,74 @@ predictor.save_submission('submission.csv')
 ---
 
 ## 🏗️ **Pipeline Architecture**
-┌───────────────────────────────────────────────────────────────┐
-│                          RAW DATA                             │
-│                    (476,169 × 50 features)                    │
-└────────────────────────────┬──────────────────────────────────┘
-↓
-┌────────────────┐
-│  STRATIFIED    │
-│  80/20 SPLIT   │
-└────────────────┘
-↓
-┌────────────────────┴────────────────────┐
-↓                                         ↓
-┌───────────────────┐                   ┌─────────────────┐
-│   TRAINING SET    │                   │  VALIDATION SET │
-│   380,935 samples │                   │  95,234 samples │
-└─────────┬─────────┘                   └────────┬────────┘
-↓                                      ↓
-┌─────────────────────────────────────────────────────────────┐
-│              FEATURE ENGINEERING (50 → 109)                  │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │ • Missing indicators (4 features)                    │   │
-│  │ • Interactions: mul/add/diff (24 features)           │   │
-│  │ • Ratios (4 features)                                │   │
-│  │ • Polynomials: ², ³, √ (12 features)                 │   │
-│  │ • Binary aggregations (3 features)                   │   │
-│  │ • Missing stats (2 features)                         │   │
-│  │ • Numeric aggregations (6 features)                  │   │
-│  │ • Frequency encoding (4 features)                    │   │
-│  └──────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│                  TARGET ENCODING                             │
-│              (14 categorical → encoded)                      │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│             MISSING VALUE IMPUTATION                         │
-│   Binary → Mode | Categorical → Mode | Numeric → Median     │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│        RESAMPLING (Handle 1:26 Class Imbalance)              │
-│           SMOTE (0.08) → Under-sampling (0.4)                │
-│                   Final Ratio: 1:2.5                         │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│           FEATURE SELECTION (109 → 80)                       │
-│         LightGBM Importance-Based Selection                  │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│                 MODEL TRAINING                               │
-│  ┌────────────┬────────────┬────────────┐                   │
-│  │  LightGBM  │  XGBoost   │  CatBoost  │                   │
-│  │ 727 trees  │ 834 trees  │ 1339 iter  │                   │
-│  └────────────┴────────────┴────────────┘                   │
-│         (Optuna-optimized hyperparameters)                   │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│            ISOTONIC CALIBRATION                              │
-│        (Better probability estimates)                        │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│           WEIGHTED ENSEMBLE                                  │
-│   0.123×LGB + 0.278×XGB + 0.599×CAT                         │
-└─────────────────────────────────────────────────────────────┘
-↓
-┌─────────────────────────────────────────────────────────────┐
-│          FINAL PREDICTIONS                                   │
-│       Validation Gini: 0.2851                                │
-└─────────────────────────────────────────────────────────────┘
 
----
+┌───────────────────────────────────────────────────────────────┐
+│                           RAW DATA                            │
+│                    (476,169 × 50 features)                    │
+└──────────────────────────────┬────────────────────────────────┘
+                               ↓
+                       ┌────────────────┐
+                       │   STRATIFIED   │
+                       │   80/20 SPLIT  │
+                       └───────┬────────┘
+                               ↓
+           ┌───────────────────┴───────────────────┐
+           ↓                                       ↓
+ ┌───────────────────┐                   ┌───────────────────┐
+ │   TRAINING SET    │                   │  VALIDATION SET   │
+ │  380,935 samples  │                   │   95,234 samples  │
+ └─────────┬─────────┘                   └─────────┬─────────┘
+           │                                       │
+ ┌─────────↓─────────┐   FIT & TRANSFORM   ┌───────↓─────────┐
+ │FEATURE ENGINEERING│ ──────────────────> │FEATURE ENGINEERING│
+ │    (50 → 109)     │    (Apply Rules)    │   (Apply Only)  │
+ └─────────┬─────────┘                     └───────┬─────────┘
+           │                                       │
+ ┌─────────↓─────────┐                     ┌───────↓─────────┐
+ │  TARGET ENCODING  │ ──────────────────> │ TARGET ENCODING │
+ │ (Fit on Train Set)│   (Apply Mapping)   │   (Apply Only)  │
+ └─────────┬─────────┘                     └───────┬─────────┘
+           │                                       │
+ ┌─────────↓─────────┐                     ┌───────↓─────────┐
+ │    IMPUTATION     │ ──────────────────> │   IMPUTATION    │
+ │   (Fit Med/Mode)  │    (Apply Stats)    │   (Apply Only)  │
+ └─────────┬─────────┘                     └───────┬─────────┘
+           │                                       │
+ ┌─────────↓─────────┐                             │
+ │    RESAMPLING     │                             │
+ │   SMOTE (0.08) +  │       STRICTLY              │
+ │    Under (0.4)    │ ─── (NO VALIDATION ──────── │
+ │(Train Set ONLY!)  │        LEAKAGE)             │
+ └─────────┬─────────┘                             │
+           │                                       │
+ ┌─────────↓─────────┐                     ┌───────↓─────────┐
+ │ FEATURE SELECTION │ ──────────────────> │FEATURE SELECTION│
+ │  (LightGBM: 80)   │  (Keep Top 80 Feat) │   (Apply Only)  │
+ └─────────┬─────────┘                     └───────┬─────────┘
+           │                                       │
+ ┌─────────↓─────────┐                     ┌───────↓─────────┐
+ │  MODEL TRAINING   │                     │                 │
+ │ • LGB: 727 trees  │ ──────────────────> │   PREDICTIONS   │
+ │ • XGB: 834 trees  │     (Predict)       │                 │
+ │ • CAT: 1339 iter  │                     │                 │
+ └─────────┬─────────┘                     └───────┬─────────┘
+           │                                       │
+           └───────────────────┬───────────────────┘
+                               ↓
+                 ┌───────────────────────────┐
+                 │   ISOTONIC CALIBRATION    │
+                 │(Calibrated using Val Set) │
+                 └─────────────┬─────────────┘
+                               ↓
+                 ┌───────────────────────────┐
+                 │     WEIGHTED ENSEMBLE     │
+                 │0.123×L + 0.278×X + 0.599×C│
+                 └─────────────┬─────────────┘
+                               ↓
+                 ┌───────────────────────────┐
+                 │     FINAL PREDICTIONS     │
+                 │   Validation Gini: 0.2851 │
+                 └───────────────────────────┘
 
 ## 🤖 **Model Details**
 
