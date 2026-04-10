@@ -240,7 +240,7 @@ predictor.save_submission('submission.csv')
 ---
 
 ## 🏗️ **Pipeline Architecture**
-
+```
 ┌───────────────────────────────────────────────────────────────┐
 │                           RAW DATA                            │
 │                    (476,169 × 50 features)                    │
@@ -259,7 +259,7 @@ predictor.save_submission('submission.csv')
  └─────────┬─────────┘                   └─────────┬─────────┘
            │                                       │
  ┌─────────↓─────────┐   FIT & TRANSFORM   ┌───────↓─────────┐
- │FEATURE ENGINEERING│ ──────────────────> │FEATURE ENGINEERING│
+ │FEATURE ENGINEERING│ ──────────────────> │FEATURE ENGRNG   │
  │    (50 → 109)     │    (Apply Rules)    │   (Apply Only)  │
  └─────────┬─────────┘                     └───────┬─────────┘
            │                                       │
@@ -308,7 +308,7 @@ predictor.save_submission('submission.csv')
                  │     FINAL PREDICTIONS     │
                  │   Validation Gini: 0.2851 │
                  └───────────────────────────┘
-
+```
 ## 🤖 **Model Details**
 
 ### **LightGBM Configuration**
@@ -387,6 +387,8 @@ ensemble_pred = (
 ---
 
 ## 📁 **Project Structure**
+
+```
 zebra/
 │
 ├── 📂 data/
@@ -438,7 +440,7 @@ zebra/
 ├── 📄 .gitignore                      # Git ignore rules
 ├── 📄 LICENSE                         # MIT License
 └── 📄 README.md                       # This file
-
+```
 ---
 
 ## ⚙️ **Configuration**
@@ -581,6 +583,7 @@ print(f"Class ratio maintained: {(y_val==1).mean():.4f}")
 ```
 
 ### **Performance Report**
+```
 ════════════════════════════════════════════════════════
 ZEBRA Performance Report
 ════════════════════════════════════════════════════════
@@ -604,7 +607,7 @@ Normalized Gini:  0.2851
 AUC-ROC:          0.6426
 Improvement:      +8.5% from baseline
 ════════════════════════════════════════════════════════
-
+```
 ---
 
 ## 🤝 **Contributing**
