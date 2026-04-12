@@ -1,22 +1,16 @@
 <div align="center">
 
-# 🦓 ZEBRA
-### **Health Insurance Claim Prediction using Advanced ML Ensemble**
+# 🦓 PROJECT ZEBRA
+### **Health Insurance Claim Prediction | Advanced ML Stacking Ensemble**
 
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![LightGBM](https://img.shields.io/badge/LightGBM-4.3.0-02569B?style=for-the-badge&logo=lightgbm&logoColor=white)](https://lightgbm.readthedocs.io/)
-[![XGBoost](https://img.shields.io/badge/XGBoost-2.0.3-FF6600?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
-[![CatBoost](https://img.shields.io/badge/CatBoost-1.2.5-FFCC00?style=for-the-badge&logo=catboost&logoColor=black)](https://catboost.ai/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Model Version](https://img.shields.io/badge/Version-1.2.0-blueviolet?style=flat-square)](https://github.com/)
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Performance](https://img.shields.io/badge/Gini-0.28542-success?style=flat-square&logo=chart-line)](https://github.com/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](LICENSE)
 
-**A production-ready ML pipeline achieving 0.285+ Normalized Gini Coefficient**
+**Engineering a high-performance predictive engine for quantifying policyholder risk and claim probability.**
 
-[Features](#-features) •
-[Installation](#-installation) •
-[Usage](#-usage) •
-[Results](#-results) •
-[Architecture](#-architecture) •
-[Contributing](#-contributing)
+[Explore Docs](https://github.com/) · [Report Bug](https://github.com/) · [Request Feature](https://github.com/)
 
 </div>
 
